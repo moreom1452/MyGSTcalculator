@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyGSTCalculator - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Welcome to MyGSTCalculator</h2>
+                <p>Your one-stop solution for all GST-related calculations and information</p>
+            </div>
+        </section>
+
+        <section class="news-updates">
+            <div class="container">
+                <h2>Latest GST News & Updates</h2>
+                <div class="news-container" id="news-container">
+                    <div class="loading">Loading latest GST news...</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Our Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-calculator"></i>
+                        <h3>GST Calculator</h3>
+                        <p>Calculate GST amount and final price based on your inputs</p>
+                        <a href="gst-calculator.html" class="btn">Use Calculator</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>ITC Calculator</h3>
+                        <p>Calculate Input Tax Credit and net GST liability</p>
+                        <a href="itc-calculator.html" class="btn">Use Calculator</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-search"></i>
+                        <h3>HSN/SAC Finder</h3>
+                        <p>Find HSN/SAC codes for your products and services</p>
+                        <a href="hsn-sac-finder.html" class="btn">Find Codes</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-invoice"></i>
+                        <h3>Invoice Generator</h3>
+                        <p>Generate GST-compliant invoices easily</p>
+                        <a href="invoice-generator.html" class="btn">Generate Invoice</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>GST Due Dates</h3>
+                        <p>Never miss a GST filing deadline</p>
+                        <a href="gst-due-dates.html" class="btn">View Calendar</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-percentage"></i>
+                        <h3>GST Rates & ITC</h3>
+                        <p>Latest information on GST rates and ITC eligibility</p>
+                        <a href="gst-rates-itc.html" class="btn">View Info</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/rss-feed.js"></script>
+</body>
+</html>

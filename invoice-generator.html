@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator - Create and Download GST Invoices</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for Invoice Generator page */
+        .invoice-form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: #343a40;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .form-group {
+            flex: 1 0 200px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .item-table th, .item-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .item-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #343a40;
+        }
+        
+        .item-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+        
+        .item-table .item-name {
+            width: 30%;
+        }
+        
+        .item-table .item-qty, .item-table .item-price, .item-table .item-gst, .item-table .item-total {
+            width: 15%;
+        }
+        
+        .item-table .item-action {
+            width: 10%;
+            text-align: center;
+        }
+        
+        .add-item-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .add-item-btn:hover {
+            background-color: #218838;
+        }
+        
+        .remove-item-btn {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .remove-item-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .invoice-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .generate-btn, .download-btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .generate-btn {
+            background-color: #007bff;
+            color: #fff;
+        }
+        
+        .generate-btn:hover {
+            background-color: #0069d9;
+        }
+        
+        .download-btn {
+            background-color: #28a745;
+            color: #fff;
+            display: none;
+        }
+        
+        .download-btn:hover {
+            background-color: #218838;
+        }
+        
+        .invoice-preview {
+            display: none;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .invoice-preview h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .business-details, .invoice-details {
+            flex: 1;
+        }
+        
+        .customer-details {
+            margin-bottom: 30px;
+        }
+        
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .preview-table th, .preview-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .preview-table th {
+            background-color: #f8f9fa;
+        }
+        
+        .preview-summary {
+            width: 300px;
+            margin-left: auto;
+        }
+        
+        .preview-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .preview-summary-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .preview-footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 0 0 100%;
+            }
+            
+            .preview-header {
+                flex-direction: column;
+            }
+            
+            .business-details, .invoice-details {
+                margin-bottom: 20px;
+            }
+            
+            .preview-summary {
+                width: 100%;
+            }
+            
+            .item-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html" class="active">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>Invoice Generator</h2>
+                <p>Create and download GST invoices easily</p>
+            </div>
+        </section>
+
+        <section class="invoice-generator-section">
+            <div class="container">
+                <div class="invoice-form">
+                    <div class="form-section">
+                        <h3>Business Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="business-name">Business Name*</label>
+                                <input type="text" id="business-name" placeholder="Enter your business name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="business-gstin">GSTIN*</label>
+                                <input type="text" id="business-gstin" placeholder="Enter your GSTIN" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="business-address">Business Address*</label>
+                                <textarea id="business-address" placeholder="Enter your business address" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="business-contact">Contact Information*</label>
+                                <textarea id="business-contact" placeholder="Enter your contact information (phone, email, etc.)" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Customer Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customer-name">Customer Name*</label>
+                                <input type="text" id="customer-name" placeholder="Enter customer name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customer-gstin">Customer GSTIN</label>
+                                <input type="text" id="customer-gstin" placeholder="Enter customer GSTIN (if applicable)">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customer-address">Customer Address*</label>
+                                <textarea id="customer-address" placeholder="Enter customer address" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Invoice Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="invoice-number">Invoice Number*</label>
+                                <input type="text" id="invoice-number" placeholder="Enter invoice number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="invoice-date">Invoice Date*</label>
+                                <input type="date" id="invoice-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="due-date">Due Date</label>
+                                <input type="date" id="due-date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Item Details</h3>
+                        <table class="item-table" id="item-table">
+                            <thead>
+                                <tr>
+                                    <th class="item-name">Item Name</th>
+                                    <th class="item-qty">Quantity</th>
+                                    <th class="item-price">Price (₹)</th>
+                                    <th class="item-gst">GST Rate (%)</th>
+                                    <th class="item-total">Total (₹)</th>
+                                    <th class="item-action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="item-tbody">
+                                <tr>
+                                    <td><input type="text" class="item-name-input" placeholder="Enter item name"></td>
+                                    <td><input type="number" class="item-qty-input" value="1" min="1"></td>
+                                    <td><input type="number" class="item-price-input" value="0" min="0" step="0.01"></td>
+                                    <td><input type="number" class="item-gst-input" value="0" min="0" step="0.01"></td>
+                                    <td class="item-total-value">0.00</td>
+                                    <td><button class="remove-item-btn"><i class="fas fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="add-item-btn" id="add-item-btn"><i class="fas fa-plus"></i> Add Item</button>
+
+                        <div class="invoice-summary">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">₹0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>GST Amount:</span>
+                                <span id="gst-amount">₹0.00</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="total-amount">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="notes">Notes/Terms</label>
+                                <textarea id="notes" placeholder="Enter any additional notes or terms"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="generate-btn" id="generate-btn">Generate Invoice</button>
+                            <button class="download-btn" id="download-btn">Download PDF</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice-preview" id="invoice-preview">
+                    <h3>Invoice Preview</h3>
+                    <div class="preview-header">
+                        <div class="business-details">
+                            <h4 id="preview-business-name"></h4>
+                            <p id="preview-business-gstin"></p>
+                            <p id="preview-business-address"></p>
+                            <p id="preview-business-contact"></p>
+                        </div>
+                        <div class="invoice-details">
+                            <h4>Invoice</h4>
+                            <p><strong>Invoice Number:</strong> <span id="preview-invoice-number"></span></p>
+                            <p><strong>Invoice Date:</strong> <span id="preview-invoice-date"></span></p>
+                            <p><strong>Due Date:</strong> <span id="preview-due-date"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="customer-details">
+                        <h4>Bill To:</h4>
+                        <p id="preview-customer-name"></p>
+                        <p id="preview-customer-gstin"></p>
+                        <p id="preview-customer-address"></p>
+                    </div>
+
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>GST Rate</th>
+                                <th>GST Amount</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="preview-item-tbody">
+                            <!-- Items will be added here dynamically -->
+                        </tbody>
+                    </table>
+
+                    <div class="preview-summary">
+                        <div class="preview-summary-row">
+                            <span>Subtotal:</span>
+                            <span id="preview-subtotal"></span>
+                        </div>
+                        <div class="preview-summary-row">
+                            <span>GST Amount:</span>
+                            <span id="preview-gst-amount"></span>
+                        </div>
+                        <div class="preview-summary-row total">
+                            <span>Total:</span>
+                            <span id="preview-total-amount"></span>
+                        </div>
+                    </div>
+
+                    <div class="preview-notes">
+                        <h4>Notes/Terms:</h4>
+                        <p id="preview-notes"></p>
+                    </div>
+
+                    <div class="preview-footer">
+                        <p>Thank you for your business!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="container">
+                <h3>About Invoice Generator</h3>
+                <p>Our GST Invoice Generator allows you to create professional invoices that comply with GST regulations. Simply fill in your business details, customer information, and item details, and our tool will automatically calculate the GST amount and total invoice value.</p>
+                <p>Key features of our Invoice Generator:</p>
+                <ul>
+                    <li>Easy-to-use interface for quick invoice creation</li>
+                    <li>Automatic calculation of GST amount and invoice total</li>
+                    <li>Option to download invoices in PDF format</li>
+                    <li>Customizable invoice fields to suit your business needs</li>
+                </ul>
+                <div class="note">
+                    <p><strong>Disclaimer:</strong> This invoice generator is provided for convenience and educational purposes only. While we strive to ensure accuracy, we recommend verifying all calculations and ensuring compliance with the latest GST regulations. Users are responsible for ensuring that their invoices meet all legal requirements.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default invoice date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('invoice-date').value = today;
+            
+            // Add item button functionality
+            const addItemBtn = document.getElementById('add-item-btn');
+            const itemTbody = document.getElementById('item-tbody');
+            
+            addItemBtn.addEventListener('click', function() {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td><input type="text" class="item-name-input" placeholder="Enter item name"></td>
+                    <td><input type="number" class="item-qty-input" value="1" min="1"></td>
+                    <td><input type="number" class="item-price-input" value="0" min="0" step="0.01"></td>
+                    <td><input type="number" class="item-gst-input" value="0" min="0" step="0.01"></td>
+                    <td class="item-total-value">0.00</td>
+                    <td><button class="remove-item-btn"><i class="fas fa-trash"></i></button></td>
+                `;
+                itemTbody.appendChild(newRow);
+                
+                // Add event listeners to new row inputs
+                addItemInputListeners(newRow);
+                
+                // Add event listener to remove button
+                const removeBtn = newRow.querySelector('.remove-item-btn');
+                removeBtn.addEventListener('click', function() {
+                    itemTbody.removeChild(newRow);
+                    updateInvoiceSummary();
+                });
+            });
+            
+            // Add event listeners to initial row inputs
+            const initialRow = itemTbody.querySelector('tr');
+            addItemInputListeners(initialRow);
+            
+            // Add event listener to initial remove button
+            const initialRemoveBtn = initialRow.querySelector('.remove-item-btn');
+            initialRemoveBtn.addEventListener('click', function() {
+                if (itemTbody.children.length > 1) {
+                    itemTbody.removeChild(initialRow);
+                    updateInvoiceSummary();
+                } else {
+                    alert('You must have at least one item in the invoice.');
+                }
+            });
+            
+            // Function to add event listeners to item inputs
+            function addItemInputListeners(row) {
+                const qtyInput = row.querySelector('.item-qty-input');
+                const priceInput = row.querySelector('.item-price-input');
+                const gstInput = row.querySelector('.item-gst-input');
+                
+                qtyInput.addEventListener('input', function() {
+                    updateItemTotal(row);
+                    updateInvoiceSummary();
+                });
+                
+                priceInput.addEventListener('input', function() {
+                    updateItemTotal(row);
+                    updateInvoiceSummary();
+                });
+                
+                gstInput.addEventListener('input', function() {
+                    updateItemTotal(row);
+                    updateInvoiceSummary();
+                });
+            }
+            
+            // Function to update item total
+            function updateItemTotal(row) {
+                const qty = parseFloat(row.querySelector('.item-qty-input').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price-input').value) || 0;
+                const gstRate = parseFloat(row.querySelector('.item-gst-input').value) || 0;
+                
+                const baseAmount = qty * price;
+                const gstAmount = baseAmount * (gstRate / 100);
+                const total = baseAmount + gstAmount;
+                
+                row.querySelector('.item-total-value').textContent = total.toFixed(2);
+            }
+            
+            // Function to update invoice summary
+            function updateInvoiceSummary() {
+                let subtotal = 0;
+                let totalGst = 0;
+                
+                const rows = itemTbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const qty = parseFloat(row.querySelector('.item-qty-input').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price-input').value) || 0;
+                    const gstRate = parseFloat(row.querySelector('.item-gst-input').value) || 0;
+                    
+                    const baseAmount = qty * price;
+                    const gstAmount = baseAmount * (gstRate / 100);
+                    
+                    subtotal += baseAmount;
+                    totalGst += gstAmount;
+                });
+                
+                const total = subtotal + totalGst;
+                
+                document.getElementById('subtotal').textContent = '₹' + subtotal.toFixed(2);
+                document.getElementById('gst-amount').textContent = '₹' + totalGst.toFixed(2);
+                document.getElementById('total-amount').textContent = '₹' + total.toFixed(2);
+            }
+            
+            // Generate Invoice button functionality
+            const generateBtn = document.getElementById('generate-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const invoicePreview = document.getElementById('invoice-preview');
+            
+            generateBtn.addEventListener('click', function() {
+                // Validate required fields
+                const businessName = document.getElementById('business-name').value;
+                const businessGstin = document.getElementById('business-gstin').value;
+                const businessAddress = document.getElementById('business-address').value;
+                const businessContact = document.getElementById('business-contact').value;
+                const customerName = document.getElementById('customer-name').value;
+                const customerAddress = document.getElementById('customer-address').value;
+                const invoiceNumber = document.getElementById('invoice-number').value;
+                const invoiceDate = document.getElementById('invoice-date').value;
+                
+                if (!businessName || !businessGstin || !businessAddress || !businessContact || 
+                    !customerName || !customerAddress || !invoiceNumber || !invoiceDate) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Check if at least one item has name, quantity, and price
+                const rows = itemTbody.querySelectorAll('tr');
+                let validItems = false;
+                
+                rows.forEach(row => {
+                    const itemName = row.querySelector('.item-name-input').value;
+                    const qty = parseFloat(row.querySelector('.item-qty-input').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price-input').value) || 0;
+                    
+                    if (itemName && qty > 0 && price > 0) {
+                        validItems = true;
+                    }
+                });
+                
+                if (!validItems) {
+                    alert('Please add at least one item with name, quantity, and price.');
+                    return;
+                }
+                
+                // Generate invoice preview
+                generateInvoicePreview();
+                
+                // Show invoice preview and download button
+                invoicePreview.style.display = 'block';
+                downloadBtn.style.display = 'block';
+                
+                // Scroll to invoice preview
+                invoicePreview.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Function to generate invoice preview
+            function generateInvoicePreview() {
+                // Set business details
+                document.getElementById('preview-business-name').textContent = document.getElementById('business-name').value;
+                document.getElementById('preview-business-gstin').textContent = 'GSTIN: ' + document.getElementById('business-gstin').value;
+                document.getElementById('preview-business-address').textContent = document.getElementById('business-address').value;
+                document.getElementById('preview-business-contact').textContent = document.getElementById('business-contact').value;
+                
+                // Set invoice details
+                document.getElementById('preview-invoice-number').textContent = document.getElementById('invoice-number').value;
+                
+                const invoiceDate = new Date(document.getElementById('invoice-date').value);
+                document.getElementById('preview-invoice-date').textContent = invoiceDate.toLocaleDateString();
+                
+                const dueDate = document.getElementById('due-date').value;
+                if (dueDate) {
+                    const formattedDueDate = new Date(dueDate).toLocaleDateString();
+                    document.getElementById('preview-due-date').textContent = formattedDueDate;
+                } else {
+                    document.getElementById('preview-due-date').textContent = 'N/A';
+                }
+                
+                // Set customer details
+                document.getElementById('preview-customer-name').textContent = document.getElementById('customer-name').value;
+                
+                const customerGstin = document.getElementById('customer-gstin').value;
+                if (customerGstin) {
+                    document.getElementById('preview-customer-gstin').textContent = 'GSTIN: ' + customerGstin;
+                } else {
+                    document.getElementById('preview-customer-gstin').textContent = '';
+                }
+                
+                document.getElementById('preview-customer-address').textContent = document.getElementById('customer-address').value;
+                
+                // Set item details
+                const previewItemTbody = document.getElementById('preview-item-tbody');
+                previewItemTbody.innerHTML = '';
+                
+                const rows = itemTbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const itemName = row.querySelector('.item-name-input').value;
+                    const qty = parseFloat(row.querySelector('.item-qty-input').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price-input').value) || 0;
+                    const gstRate = parseFloat(row.querySelector('.item-gst-input').value) || 0;
+                    
+                    const baseAmount = qty * price;
+                    const gstAmount = baseAmount * (gstRate / 100);
+                    const total = baseAmount + gstAmount;
+                    
+                    if (itemName && qty > 0 && price > 0) {
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${itemName}</td>
+                            <td>${qty}</td>
+                            <td>₹${price.toFixed(2)}</td>
+                            <td>${gstRate}%</td>
+                            <td>₹${gstAmount.toFixed(2)}</td>
+                            <td>₹${total.toFixed(2)}</td>
+                        `;
+                        previewItemTbody.appendChild(newRow);
+                    }
+                });
+                
+                // Set invoice summary
+                document.getElementById('preview-subtotal').textContent = document.getElementById('subtotal').textContent;
+                document.getElementById('preview-gst-amount').textContent = document.getElementById('gst-amount').textContent;
+                document.getElementById('preview-total-amount').textContent = document.getElementById('total-amount').textContent;
+                
+                // Set notes
+                const notes = document.getElementById('notes').value;
+                if (notes) {
+                    document.getElementById('preview-notes').textContent = notes;
+                } else {
+                    document.getElementById('preview-notes').textContent = 'No additional notes or terms.';
+                }
+            }
+            
+            // Download PDF button functionality
+            downloadBtn.addEventListener('click', function() {
+                const { jsPDF } = window.jspdf;
+                
+                // Create new PDF document
+                const doc = new jsPDF('p', 'mm', 'a4');
+                const invoicePreview = document.getElementById('invoice-preview');
+                
+                // Use html2canvas to capture the invoice preview as an image
+                html2canvas(invoicePreview).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = 210; // A4 width in mm
+                    const pageHeight = 297; // A4 height in mm
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 0;
+                    
+                    // Add image to PDF
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    // Add new pages if the invoice is longer than one page
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        doc.addPage();
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    // Save the PDF
+                    const businessName = document.getElementById('business-name').value;
+                    const invoiceNumber = document.getElementById('invoice-number').value;
+                    const fileName = `Invoice_${businessName}_${invoiceNumber}.pdf`.replace(/\s+/g, '_');
+                    
+                    doc.save(fileName);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITC Calculator - Calculate Input Tax Credit and Net GST Liability</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html" class="active">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>ITC Calculator</h2>
+                <p>Calculate Input Tax Credit and Net GST Liability</p>
+            </div>
+        </section>
+
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-container">
+                    <form id="itc-calculator-form">
+                        <h3>Purchase Details</h3>
+                        <div class="form-group">
+                            <label for="purchase-price">Purchase Price (₹)</label>
+                            <input type="number" id="purchase-price" step="0.01" min="0" placeholder="Enter purchase price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="purchase-gst-rate">GST Rate on Purchase (%)</label>
+                            <input type="number" id="purchase-gst-rate" step="0.01" min="0" placeholder="Enter GST rate on purchase" required>
+                        </div>
+                        
+                        <h3>Sales Details</h3>
+                        <div class="form-group">
+                            <label for="sales-price">Sales Price (₹)</label>
+                            <input type="number" id="sales-price" step="0.01" min="0" placeholder="Enter sales price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sales-gst-rate">GST Rate on Sales (%)</label>
+                            <input type="number" id="sales-gst-rate" step="0.01" min="0" placeholder="Enter GST rate on sales" required>
+                        </div>
+                        
+                        <button type="submit" class="btn">Calculate</button>
+                    </form>
+
+                    <div id="itc-result-container" class="result-container">
+                        <h3>Calculation Results</h3>
+                        <h4>Purchase Details</h4>
+                        <div class="result-item">
+                            <span>Purchase Price:</span>
+                            <span>₹<span id="purchase-price-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Rate on Purchase:</span>
+                            <span><span id="purchase-gst-rate-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Amount on Purchase:</span>
+                            <span>₹<span id="purchase-gst-amount-result">0.00</span></span>
+                        </div>
+                        
+                        <h4>Sales Details</h4>
+                        <div class="result-item">
+                            <span>Sales Price:</span>
+                            <span>₹<span id="sales-price-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Rate on Sales:</span>
+                            <span><span id="sales-gst-rate-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Amount on Sales:</span>
+                            <span>₹<span id="sales-gst-amount-result">0.00</span></span>
+                        </div>
+                        
+                        <h4>ITC and Liability</h4>
+                        <div class="result-item">
+                            <span>Input Tax Credit (ITC) Available:</span>
+                            <span>₹<span id="itc-available-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>Net GST Liability:</span>
+                            <span>₹<span id="net-gst-liability-result">0.00</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-info">
+                    <h3>About ITC Calculator</h3>
+                    <p>This Input Tax Credit (ITC) calculator helps you determine the available ITC and net GST liability based on your purchase and sales details.</p>
+                    
+                    <h4>How to use this calculator:</h4>
+                    <ol>
+                        <li>Enter the purchase price (excluding GST)</li>
+                        <li>Enter the GST rate applicable on your purchase</li>
+                        <li>Enter the sales price (excluding GST)</li>
+                        <li>Enter the GST rate applicable on your sales</li>
+                        <li>Click the Calculate button</li>
+                    </ol>
+                    
+                    <h4>ITC and Net GST Liability Formula:</h4>
+                    <p>GST Amount on Purchase = (Purchase Price × GST Rate on Purchase) ÷ 100</p>
+                    <p>GST Amount on Sales = (Sales Price × GST Rate on Sales) ÷ 100</p>
+                    <p>Input Tax Credit (ITC) Available = GST Amount on Purchase</p>
+                    <p>Net GST Liability = GST Amount on Sales - Input Tax Credit</p>
+                    
+                    <div class="note">
+                        <p><strong>Note:</strong> This calculator is for educational purposes only. The actual ITC eligibility may depend on various factors as per GST laws. Always verify calculations with official sources or a tax professional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

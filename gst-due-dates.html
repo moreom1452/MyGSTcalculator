@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Due Date Calendar - FY 2025 Filing Deadlines</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for GST Due Dates page */
+        .calendar-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-title {
+            font-size: 1.5rem;
+            color: #343a40;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .calendar-nav button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .calendar-nav button:hover {
+            background-color: #0056b3;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .calendar-day {
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            border: 1px dashed #dee2e6;
+        }
+        
+        .calendar-day.today {
+            background-color: #e8f4ff;
+            border: 2px solid #007bff;
+        }
+        
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .due-date-item {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            padding: 3px 5px;
+            border-radius: 3px;
+            color: #fff;
+        }
+        
+        .due-date-item.gstr1 {
+            background-color: #28a745;
+        }
+        
+        .due-date-item.gstr3b {
+            background-color: #dc3545;
+        }
+        
+        .due-date-item.gstr9 {
+            background-color: #fd7e14;
+        }
+        
+        .due-date-item.other {
+            background-color: #6c757d;
+        }
+        
+        .due-date-legend {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        .legend-color.gstr1 {
+            background-color: #28a745;
+        }
+        
+        .legend-color.gstr3b {
+            background-color: #dc3545;
+        }
+        
+        .legend-color.gstr9 {
+            background-color: #fd7e14;
+        }
+        
+        .legend-color.other {
+            background-color: #6c757d;
+        }
+        
+        .due-dates-list {
+            margin-top: 30px;
+        }
+        
+        .due-dates-list h3 {
+            margin-bottom: 20px;
+            color: #343a40;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .month-section {
+            margin-bottom: 30px;
+        }
+        
+        .month-section h4 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .due-date-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .due-date-table th, .due-date-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .due-date-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #343a40;
+        }
+        
+        .due-date-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .due-date-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 0.85rem;
+            margin-right: 5px;
+        }
+        
+        .due-date-tag.gstr1 {
+            background-color: #28a745;
+        }
+        
+        .due-date-tag.gstr3b {
+            background-color: #dc3545;
+        }
+        
+        .due-date-tag.gstr9 {
+            background-color: #fd7e14;
+        }
+        
+        .due-date-tag.other {
+            background-color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                font-size: 0.85rem;
+            }
+            
+            .calendar-day {
+                min-height: 80px;
+                padding: 5px;
+            }
+            
+            .due-date-item {
+                font-size: 0.7rem;
+                padding: 2px 3px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .calendar-grid {
+                display: none;
+            }
+            
+            .due-dates-list {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html" class="active">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>GST Due Date Calendar</h2>
+                <p>GST return filing due dates for FY 2025</p>
+            </div>
+        </section>
+
+        <section class="gst-due-dates-section">
+            <div class="container">
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <h3 class="calendar-title">FY 2025 GST Due Date Calendar</h3>
+                        <div class="calendar-nav">
+                            <button id="prev-month"><i class="fas fa-chevron-left"></i> Previous</button>
+                            <span id="current-month-year" style="margin: 0 15px;">April 2024</span>
+                            <button id="next-month">Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid">
+                        <div class="calendar-day-header">Sun</div>
+                        <div class="calendar-day-header">Mon</div>
+                        <div class="calendar-day-header">Tue</div>
+                        <div class="calendar-day-header">Wed</div>
+                        <div class="calendar-day-header">Thu</div>
+                        <div class="calendar-day-header">Fri</div>
+                        <div class="calendar-day-header">Sat</div>
+                        
+                        <!-- Calendar days will be generated dynamically by JavaScript -->
+                    </div>
+                    
+                    <div class="due-date-legend">
+                        <div class="legend-item">
+                            <div class="legend-color gstr1"></div>
+                            <span>GSTR-1</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color gstr3b"></div>
+                            <span>GSTR-3B</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color gstr9"></div>
+                            <span>GSTR-9/9C</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color other"></div>
+                            <span>Other Returns</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="due-dates-list">
+                    <h3>GST Due Dates for FY 2025</h3>
+                    
+                    <div class="month-section">
+                        <h4>April 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th April 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>March 2024</td>
+                                    <td>Taxpayers with aggregate turnover > ₹5 crore</td>
+                                </tr>
+                                <tr>
+                                    <td>13th April 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>Jan-Mar 2024</td>
+                                    <td>Quarterly filers (QRMP scheme)</td>
+                                </tr>
+                                <tr>
+                                    <td>20th April 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>March 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>May 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th May 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>April 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th May 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>April 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>June 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th June 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>May 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th June 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>May 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>July 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th July 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>June 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>13th July 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>Apr-Jun 2024</td>
+                                    <td>Quarterly filers (QRMP scheme)</td>
+                                </tr>
+                                <tr>
+                                    <td>20th July 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>June 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>August 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th August 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>July 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th August 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>July 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>September 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th September 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>August 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th September 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>August 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>October 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th October 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>September 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>13th October 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>Jul-Sep 2024</td>
+                                    <td>Quarterly filers (QRMP scheme)</td>
+                                </tr>
+                                <tr>
+                                    <td>20th October 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>September 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>November 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th November 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>October 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th November 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>October 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>December 2024</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th December 2024</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>November 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th December 2024</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>November 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>January 2025</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th January 2025</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>December 2024</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>13th January 2025</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>Oct-Dec 2024</td>
+                                    <td>Quarterly filers (QRMP scheme)</td>
+                                </tr>
+                                <tr>
+                                    <td>20th January 2025</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>December 2024</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>February 2025</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th February 2025</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>January 2025</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th February 2025</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>January 2025</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="month-section">
+                        <h4>March 2025</h4>
+                        <table class="due-date-table">
+                            <thead>
+                                <tr>
+                                    <th>Due Date</th>
+                                    <th>Return Type</th>
+                                    <th>Period</th>
+                                    <th>Applicable To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>11th March 2025</td>
+                                    <td><span class="due-date-tag gstr1">GSTR-1</span></td>
+                                    <td>February 2025</td>
+                                    <td>Monthly filers</td>
+                                </tr>
+                                <tr>
+                                    <td>20th March 2025</td>
+                                    <td><span class="due-date-tag gstr3b">GSTR-3B</span></td>
+                                    <td>February 2025</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                                <tr>
+                                    <td>31st March 2025</td>
+                                    <td><span class="due-date-tag gstr9">GSTR-9/9C</span></td>
+                                    <td>FY 2023-24</td>
+                                    <td>All taxpayers</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3>About GST Due Dates</h3>
+                    <p>The GST Due Date Calendar provides information on the deadlines for filing various GST returns for the Financial Year 2025 (April 2024 to March 2025). It is important to file your GST returns on time to avoid penalties and interest.</p>
+                    <p>Key GST returns include:</p>
+                    <ul>
+                        <li><strong>GSTR-1:</strong> Details of outward supplies of goods or services</li>
+                        <li><strong>GSTR-3B:</strong> Monthly summary return</li>
+                        <li><strong>GSTR-9:</strong> Annual return</li>
+                        <li><strong>GSTR-9C:</strong> Reconciliation statement</li>
+                    </ul>
+                    <div class="note">
+                        <p><strong>Disclaimer:</strong> The due dates provided are based on the current GST regulations. These dates may change based on government notifications. Always verify the current due dates from official sources like GST.gov.in or CBIC.gov.in before filing your returns.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calendar functionality
+            const calendarGrid = document.querySelector('.calendar-grid');
+            const currentMonthYearElement = document.getElementById('current-month-year');
+            const prevMonthButton = document.getElementById('prev-month');
+            const nextMonthButton = document.getElementById('next-month');
+            
+            // Starting with April 2024 (FY 2025)
+            let currentMonth = 3; // 0-based, so 3 is April
+            let currentYear = 2024;
+            
+            // GST due dates for FY 2025
+            const gstDueDates = {
+                // Format: 'YYYY-MM-DD': { type: 'gstr1|gstr3b|gstr9|other', description: 'Description' }
+                '2024-04-11': { type: 'gstr1', description: 'GSTR-1 for March 2024' },
+                '2024-04-13': { type: 'gstr1', description: 'GSTR-1 for Jan-Mar 2024 (Quarterly)' },
+                '2024-04-20': { type: 'gstr3b', description: 'GSTR-3B for March 2024' },
+                '2024-05-11': { type: 'gstr1', description: 'GSTR-1 for April 2024' },
+                '2024-05-20': { type: 'gstr3b', description: 'GSTR-3B for April 2024' },
+                '2024-06-11': { type: 'gstr1', description: 'GSTR-1 for May 2024' },
+                '2024-06-20': { type: 'gstr3b', description: 'GSTR-3B for May 2024' },
+                '2024-07-11': { type: 'gstr1', description: 'GSTR-1 for June 2024' },
+                '2024-07-13': { type: 'gstr1', description: 'GSTR-1 for Apr-Jun 2024 (Quarterly)' },
+                '2024-07-20': { type: 'gstr3b', description: 'GSTR-3B for June 2024' },
+                '2024-08-11': { type: 'gstr1', description: 'GSTR-1 for July 2024' },
+                '2024-08-20': { type: 'gstr3b', description: 'GSTR-3B for July 2024' },
+                '2024-09-11': { type: 'gstr1', description: 'GSTR-1 for August 2024' },
+                '2024-09-20': { type: 'gstr3b', description: 'GSTR-3B for August 2024' },
+                '2024-10-11': { type: 'gstr1', description: 'GSTR-1 for September 2024' },
+                '2024-10-13': { type: 'gstr1', description: 'GSTR-1 for Jul-Sep 2024 (Quarterly)' },
+                '2024-10-20': { type: 'gstr3b', description: 'GSTR-3B for September 2024' },
+                '2024-11-11': { type: 'gstr1', description: 'GSTR-1 for October 2024' },
+                '2024-11-20': { type: 'gstr3b', description: 'GSTR-3B for October 2024' },
+                '2024-12-11': { type: 'gstr1', description: 'GSTR-1 for November 2024' },
+                '2024-12-20': { type: 'gstr3b', description: 'GSTR-3B for November 2024' },
+                '2025-01-11': { type: 'gstr1', description: 'GSTR-1 for December 2024' },
+                '2025-01-13': { type: 'gstr1', description: 'GSTR-1 for Oct-Dec 2024 (Quarterly)' },
+                '2025-01-20': { type: 'gstr3b', description: 'GSTR-3B for December 2024' },
+                '2025-02-11': { type: 'gstr1', description: 'GSTR-1 for January 2025' },
+                '2025-02-20': { type: 'gstr3b', description: 'GSTR-3B for January 2025' },
+                '2025-03-11': { type: 'gstr1', description: 'GSTR-1 for February 2025' },
+                '2025-03-20': { type: 'gstr3b', description: 'GSTR-3B for February 2025' },
+                '2025-03-31': { type: 'gstr9', description: 'GSTR-9/9C for FY 2023-24' }
+            };
+            
+            // Function to generate calendar
+            function generateCalendar(month, year) {
+                // Clear previous calendar days
+                const dayElements = calendarGrid.querySelectorAll('.calendar-day');
+                dayElements.forEach(day => day.remove());
+                
+                // Update month and year display
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                currentMonthYearElement.textContent = `${monthNames[month]} ${year}`;
+                
+                // Get first day of month and number of days in month
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Add empty cells for days before first day of month
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day empty';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Add cells for each day of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Check if this is today
+                    const today = new Date();
+                    if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    // Add day number
+                    const dayNumber = document.createElement('div');
+                    dayNumber.className = 'day-number';
+                    dayNumber.textContent = day;
+                    dayElement.appendChild(dayNumber);
+                    
+                    // Check if this day has any GST due dates
+                    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    if (gstDueDates[dateString]) {
+                        const dueDateItem = document.createElement('div');
+                        dueDateItem.className = `due-date-item ${gstDueDates[dateString].type}`;
+                        dueDateItem.textContent = gstDueDates[dateString].description;
+                        dayElement.appendChild(dueDateItem);
+                    }
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+            
+            // Generate initial calendar
+            generateCalendar(currentMonth, currentYear);
+            
+            // Previous month button
+            prevMonthButton.addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                
+                // Don't go before April 2024
+                if (currentYear < 2024 || (currentYear === 2024 && currentMonth < 3)) {
+                    currentMonth = 3;
+                    currentYear = 2024;
+                    return;
+                }
+                
+                generateCalendar(currentMonth, currentYear);
+            });
+            
+            // Next month button
+            nextMonthButton.addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                
+                // Don't go beyond March 2025
+                if (currentYear > 2025 || (currentYear === 2025 && currentMonth > 2)) {
+                    currentMonth = 2;
+                    currentYear = 2025;
+                    return;
+                }
+                
+                generateCalendar(currentMonth, currentYear);
+            });
+        });
+    </script>
+</body>
+</html>

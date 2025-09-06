@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Rates & ITC Information - Latest GST Rates and ITC Eligibility</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for GST Rates & ITC page */
+        .info-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-section h3 {
+            margin-bottom: 20px;
+            color: #343a40;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .info-section p {
+            margin-bottom: 15px;
+            color: #6c757d;
+        }
+        
+        .info-section ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .info-section ul li {
+            margin-bottom: 10px;
+            color: #6c757d;
+        }
+        
+        .info-section .note {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-top: 20px;
+        }
+        
+        .info-section .note p {
+            margin-bottom: 0;
+        }
+        
+        .search-container {
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            background-color: #0056b3;
+        }
+        
+        .sector-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .sector-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: -1px;
+            transition: all 0.3s ease;
+        }
+        
+        .sector-tab:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .sector-tab.active {
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+            color: #007bff;
+        }
+        
+        .sector-content {
+            display: none;
+        }
+        
+        .sector-content.active {
+            display: block;
+        }
+        
+        .rate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .rate-table th, .rate-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .rate-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #343a40;
+        }
+        
+        .rate-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .rate-input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html" class="active">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>GST Rates & ITC Information</h2>
+                <p>Latest information on GST rates and ITC eligibility</p>
+            </div>
+        </section>
+
+        <section class="gst-rates-section">
+            <div class="container">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="rate-search" placeholder="Search for product or service category...">
+                        <button id="search-btn"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>GST Rate Structure</h3>
+                    <p>The Goods and Services Tax (GST) in India has a multi-tier rate structure. Products and services are classified into different tax slabs based on their nature and usage.</p>
+                    
+                    <div class="sector-tabs">
+                        <div class="sector-tab active" data-sector="general">General</div>
+                        <div class="sector-tab" data-sector="agriculture">Agriculture</div>
+                        <div class="sector-tab" data-sector="fmcg">FMCG</div>
+                        <div class="sector-tab" data-sector="electronics">Electronics</div>
+                        <div class="sector-tab" data-sector="automobile">Automobile</div>
+                        <div class="sector-tab" data-sector="healthcare">Healthcare</div>
+                        <div class="sector-tab" data-sector="services">Services</div>
+                    </div>
+                    
+                    <div id="general" class="sector-content active">
+                        <p>GST rates are broadly categorized into the following slabs:</p>
+                        <ul>
+                            <li><strong>Nil Rate (0%):</strong> Essential goods and services exempt from GST</li>
+                            <li><strong>5% Rate:</strong> Items of mass consumption</li>
+                            <li><strong>12% Rate:</strong> Standard rate for many goods and services</li>
+                            <li><strong>18% Rate:</strong> Standard rate for many goods and services</li>
+                            <li><strong>28% Rate:</strong> Luxury and sin goods</li>
+                        </ul>
+                        <p>Please note that GST rates may change based on government notifications. Always verify the current applicable rate before making business decisions.</p>
+                        
+                        <div class="note">
+                            <p><strong>Important:</strong> As per the requirement, this website does not display default GST rates for specific products or services. Users must enter the applicable GST rate manually when using our calculators.</p>
+                        </div>
+                    </div>
+                    
+                    <div id="agriculture" class="sector-content">
+                        <h4>Agriculture Sector</h4>
+                        <p>The agriculture sector has various GST rates depending on the specific product or service. Please enter the applicable GST rate for your agricultural products when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Fresh Vegetables and Fruits</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Seeds</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Fertilizers</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Agricultural Machinery</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Pesticides</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="fmcg" class="sector-content">
+                        <h4>FMCG Sector</h4>
+                        <p>Fast-Moving Consumer Goods (FMCG) have different GST rates based on the product category. Please enter the applicable GST rate for your FMCG products when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Packaged Food Items</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Personal Care Products</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Household Cleaning Products</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Beverages</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Confectionery</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="electronics" class="sector-content">
+                        <h4>Electronics Sector</h4>
+                        <p>Electronic goods have different GST rates based on the product category. Please enter the applicable GST rate for your electronic products when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Mobile Phones</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Computers and Laptops</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Television Sets</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Refrigerators</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Air Conditioners</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="automobile" class="sector-content">
+                        <h4>Automobile Sector</h4>
+                        <p>Automobiles and related products have different GST rates based on the vehicle type and category. Please enter the applicable GST rate for your automobile products when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Small Cars</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Mid-size Cars</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Luxury Cars</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Two-wheelers</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Auto Parts</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="healthcare" class="sector-content">
+                        <h4>Healthcare Sector</h4>
+                        <p>Healthcare products and services have different GST rates based on the category. Please enter the applicable GST rate for your healthcare products or services when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Medicines</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Medical Equipment</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Hospital Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Diagnostic Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Health Insurance</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="services" class="sector-content">
+                        <h4>Services Sector</h4>
+                        <p>Various services have different GST rates based on the service category. Please enter the applicable GST rate for your services when using our calculators.</p>
+                        
+                        <table class="rate-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Enter GST Rate (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Banking and Financial Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Telecom Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Restaurant Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Hotel Accommodation</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                                <tr>
+                                    <td>Professional Services</td>
+                                    <td><input type="number" class="rate-input" min="0" step="0.01"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Input Tax Credit (ITC) Eligibility</h3>
+                    <p>Input Tax Credit (ITC) is a mechanism under GST that allows businesses to claim credit for the tax paid on purchases when they make taxable supplies. Here are the key eligibility criteria for claiming ITC:</p>
+                    
+                    <h4>ITC Eligibility Criteria:</h4>
+                    <ul>
+                        <li>The taxpayer must be registered under GST</li>
+                        <li>The goods or services must be used for business purposes</li>
+                        <li>The taxpayer must have a valid tax invoice or debit note</li>
+                        <li>The taxpayer must have received the goods or services</li>
+                        <li>The supplier must have paid the tax to the government</li>
+                        <li>The taxpayer must have filed their GST returns</li>
+                    </ul>
+                    
+                    <h4>Restrictions on ITC:</h4>
+                    <p>ITC is not available for certain goods and services, including:</p>
+                    <ul>
+                        <li>Motor vehicles and conveyances (with certain exceptions)</li>
+                        <li>Food and beverages, outdoor catering (with certain exceptions)</li>
+                        <li>Beauty treatment, health services, cosmetic and plastic surgery</li>
+                        <li>Membership of clubs, health and fitness centers</li>
+                        <li>Rent-a-cab, life insurance, health insurance (with certain exceptions)</li>
+                        <li>Travel benefits extended to employees on vacation</li>
+                        <li>Works contract services for construction of immovable property (with certain exceptions)</li>
+                        <li>Goods or services used for personal consumption</li>
+                        <li>Goods that are lost, stolen, destroyed, written off, or disposed of as gifts or free samples</li>
+                    </ul>
+                    
+                    <div class="note">
+                        <p><strong>Note:</strong> The ITC eligibility rules may change based on government notifications. Always verify the current applicable rules before making business decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sector tabs functionality
+            const sectorTabs = document.querySelectorAll('.sector-tab');
+            const sectorContents = document.querySelectorAll('.sector-content');
+            
+            sectorTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    sectorTabs.forEach(t => t.classList.remove('active'));
+                    sectorContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    const sector = this.getAttribute('data-sector');
+                    document.getElementById(sector).classList.add('active');
+                });
+            });
+            
+            // Search functionality
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('rate-search');
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', function() {
+                    const searchTerm = searchInput.value.trim().toLowerCase();
+                    
+                    if (searchTerm === '') {
+                        alert('Please enter a search term');
+                        return;
+                    }
+                    
+                    // Search in all sector contents
+                    let found = false;
+                    
+                    sectorContents.forEach(content => {
+                        const categories = content.querySelectorAll('.rate-table tbody tr td:first-child');
+                        
+                        categories.forEach(category => {
+                            if (category.textContent.toLowerCase().includes(searchTerm)) {
+                                // Get the sector ID
+                                const sectorId = content.getAttribute('id');
+                                
+                                // Activate the corresponding tab
+                                sectorTabs.forEach(tab => {
+                                    if (tab.getAttribute('data-sector') === sectorId) {
+                                        tab.click();
+                                        found = true;
+                                        
+                                        // Highlight the found category
+                                        category.parentElement.style.backgroundColor = '#fff3cd';
+                                        setTimeout(() => {
+                                            category.parentElement.style.backgroundColor = '';
+                                        }, 3000);
+                                        
+                                        // Scroll to the found category
+                                        category.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+                                });
+                                
+                                return;
+                            }
+                        });
+                    });
+                    
+                    if (!found) {
+                        alert(`No category found matching "${searchTerm}"`);                        
+                    }
+                });
+                
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchBtn.click();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyGSTCalculator - Calculate GST Amount and Final Price</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html" class="active">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>GST Calculator</h2>
+                <p>Calculate GST amount and final price based on your inputs</p>
+            </div>
+        </section>
+
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-container">
+                    <form id="gst-calculator-form">
+                        <div class="form-group">
+                            <label for="product-price">Product Price (₹)</label>
+                            <input type="number" id="product-price" step="0.01" min="0" placeholder="Enter product price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gst-rate">GST Rate (%)</label>
+                            <input type="number" id="gst-rate" step="0.01" min="0" placeholder="Enter GST rate" required>
+                        </div>
+                        <button type="submit" class="btn">Calculate</button>
+                    </form>
+
+                    <div id="gst-result-container" class="result-container">
+                        <h3>Calculation Results</h3>
+                        <div class="result-item">
+                            <span>Base Price:</span>
+                            <span>₹<span id="base-price-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Rate:</span>
+                            <span><span id="gst-rate-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>GST Amount:</span>
+                            <span>₹<span id="gst-amount-result">0.00</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span>Final Price (Including GST):</span>
+                            <span>₹<span id="final-price-result">0.00</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculator-info">
+                    <h3>About GST Calculator</h3>
+                    <p>This GST calculator helps you determine the GST amount and final price of a product or service based on the base price and GST rate you provide.</p>
+                    
+                    <h4>How to use this calculator:</h4>
+                    <ol>
+                        <li>Enter the product or service price (excluding GST)</li>
+                        <li>Enter the applicable GST rate percentage</li>
+                        <li>Click the Calculate button</li>
+                    </ol>
+                    
+                    <h4>GST Formula:</h4>
+                    <p>GST Amount = (Base Price × GST Rate) ÷ 100</p>
+                    <p>Final Price = Base Price + GST Amount</p>
+                    
+                    <div class="note">
+                        <p><strong>Note:</strong> This calculator is for educational purposes only. Always verify GST calculations with official sources or a tax professional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

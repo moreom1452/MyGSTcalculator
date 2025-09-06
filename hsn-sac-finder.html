@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSN/SAC Finder - Find HSN/SAC Codes for Products and Services</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for HSN/SAC Finder */
+        .search-container {
+            margin-bottom: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            background-color: #0056b3;
+        }
+        
+        .search-options {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .search-option {
+            margin: 0 10px;
+        }
+        
+        .search-results {
+            margin-top: 30px;
+        }
+        
+        .result-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-item h3 {
+            margin-bottom: 10px;
+            color: #343a40;
+        }
+        
+        .result-item .code {
+            font-weight: bold;
+            color: #007bff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .result-item .description {
+            margin-bottom: 15px;
+            color: #6c757d;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>MyGSTCalculator</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gst-calculator.html">GST Calculator</a></li>
+                    <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                    <li><a href="hsn-sac-finder.html" class="active">HSN/SAC Finder</a></li>
+                    <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                    <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                    <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h2>HSN/SAC Finder</h2>
+                <p>Find HSN/SAC codes for your products and services</p>
+            </div>
+        </section>
+
+        <section class="hsn-sac-section">
+            <div class="container">
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="hsn-sac-search" placeholder="Search for product or service...">
+                        <button id="search-btn"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                    <div class="search-options">
+                        <div class="search-option">
+                            <input type="radio" id="hsn-option" name="search-type" value="hsn" checked>
+                            <label for="hsn-option">HSN (Goods)</label>
+                        </div>
+                        <div class="search-option">
+                            <input type="radio" id="sac-option" name="search-type" value="sac">
+                            <label for="sac-option">SAC (Services)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-results" class="search-results">
+                    <div class="no-results">
+                        <p>Enter a product or service name to search for HSN/SAC codes</p>
+                    </div>
+                </div>
+
+                <div class="hsn-sac-info">
+                    <h3>About HSN/SAC Codes</h3>
+                    <p>HSN (Harmonized System of Nomenclature) codes are used for classifying goods under GST, while SAC (Services Accounting Code) is used for services. These codes help in determining the applicable GST rate for products and services.</p>
+                    
+                    <h4>Why HSN/SAC Codes are Important:</h4>
+                    <ul>
+                        <li>Standardized classification of goods and services</li>
+                        <li>Determination of applicable GST rates</li>
+                        <li>Required for GST invoices and returns</li>
+                        <li>Facilitates international trade and customs procedures</li>
+                    </ul>
+                    
+                    <div class="note">
+                        <p><strong>Note:</strong> This tool provides general guidance for finding HSN/SAC codes. For official classification and GST rates, please refer to the official GST portal or consult a tax professional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>MyGSTCalculator</h2>
+                    <p>Your trusted GST calculation partner</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="gst-calculator.html">GST Calculator</a></li>
+                        <li><a href="itc-calculator.html">ITC Calculator</a></li>
+                        <li><a href="hsn-sac-finder.html">HSN/SAC Finder</a></li>
+                        <li><a href="invoice-generator.html">Invoice Generator</a></li>
+                        <li><a href="gst-due-dates.html">GST Due Dates</a></li>
+                        <li><a href="gst-rates-itc.html">GST Rates & ITC</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2025</span> MyGSTCalculator. All rights reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="disclaimer.html">Disclaimer</a> | <a href="terms-of-service.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('hsn-sac-search');
+            const searchResults = document.getElementById('search-results');
+            const hsnOption = document.getElementById('hsn-option');
+            const sacOption = document.getElementById('sac-option');
+            
+            // Sample HSN/SAC data (would be replaced with a proper database or API)
+            const hsnData = [
+                { code: '0101', description: 'Live horses, asses, mules and hinnies' },
+                { code: '0201', description: 'Meat of bovine animals, fresh or chilled' },
+                { code: '0301', description: 'Live fish' },
+                { code: '0401', description: 'Milk and cream, not concentrated' },
+                { code: '0701', description: 'Potatoes, fresh or chilled' },
+                { code: '0803', description: 'Bananas, including plantains' },
+                { code: '0901', description: 'Coffee, whether or not roasted or decaffeinated' },
+                { code: '1001', description: 'Wheat and meslin' },
+                { code: '1006', description: 'Rice' },
+                { code: '1701', description: 'Cane or beet sugar and chemically pure sucrose, in solid form' },
+                { code: '2201', description: 'Waters, including natural or artificial mineral waters' },
+                { code: '2710', description: 'Petroleum oils and oils obtained from bituminous minerals' },
+                { code: '3004', description: 'Medicaments consisting of mixed or unmixed products for therapeutic or prophylactic uses' },
+                { code: '3926', description: 'Other articles of plastics' },
+                { code: '4901', description: 'Printed books, brochures, leaflets and similar printed matter' },
+                { code: '6101', description: 'Men\'s or boys\' overcoats, car-coats, capes, cloaks, anoraks' },
+                { code: '6201', description: 'Women\'s or girls\' overcoats, car-coats, capes, cloaks, anoraks' },
+                { code: '7108', description: 'Gold (including gold plated with platinum)' },
+                { code: '8415', description: 'Air conditioning machines' },
+                { code: '8517', description: 'Telephone sets, including telephones for cellular networks' },
+                { code: '8528', description: 'Monitors and projectors; reception apparatus for television' },
+                { code: '9403', description: 'Other furniture and parts thereof' },
+                { code: '9503', description: 'Tricycles, scooters, pedal cars and similar wheeled toys' }
+            ];
+            
+            const sacData = [
+                { code: '9954', description: 'Construction services' },
+                { code: '9963', description: 'Accommodation, food and beverage services' },
+                { code: '9964', description: 'Passenger transport services' },
+                { code: '9965', description: 'Goods transport services' },
+                { code: '9966', description: 'Rental services of transport vehicles' },
+                { code: '9967', description: 'Supporting services in transport' },
+                { code: '9968', description: 'Postal and courier services' },
+                { code: '9969', description: 'Electricity, gas, water and other distribution services' },
+                { code: '9971', description: 'Financial and related services' },
+                { code: '9972', description: 'Real estate services' },
+                { code: '9973', description: 'Leasing or rental services' },
+                { code: '9981', description: 'Research and development services' },
+                { code: '9982', description: 'Legal and accounting services' },
+                { code: '9983', description: 'Professional, technical and business services' },
+                { code: '9984', description: 'Telecommunications, broadcasting and information supply services' },
+                { code: '9985', description: 'Support services' },
+                { code: '9986', description: 'Support services to agriculture, hunting, forestry, fishing, mining and utilities' },
+                { code: '9987', description: 'Maintenance, repair and installation services' },
+                { code: '9988', description: 'Manufacturing services on physical inputs owned by others' },
+                { code: '9989', description: 'Other manufacturing services' },
+                { code: '9991', description: 'Public administration and other services provided to the community as a whole' },
+                { code: '9992', description: 'Education services' },
+                { code: '9993', description: 'Human health and social care services' },
+                { code: '9994', description: 'Sewage and waste collection, treatment and disposal and other environmental protection services' },
+                { code: '9995', description: 'Services of membership organizations' },
+                { code: '9996', description: 'Recreational, cultural and sporting services' },
+                { code: '9997', description: 'Other services' },
+                { code: '9998', description: 'Domestic services' },
+                { code: '9999', description: 'Services provided by extraterritorial organizations and bodies' }
+            ];
+            
+            // Search function
+            function performSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                const searchType = hsnOption.checked ? 'hsn' : 'sac';
+                const data = searchType === 'hsn' ? hsnData : sacData;
+                
+                if (searchTerm === '') {
+                    searchResults.innerHTML = `
+                        <div class="no-results">
+                            <p>Please enter a search term</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Filter data based on search term
+                const filteredData = data.filter(item => 
+                    item.code.toLowerCase().includes(searchTerm) || 
+                    item.description.toLowerCase().includes(searchTerm)
+                );
+                
+                // Display results
+                if (filteredData.length > 0) {
+                    let resultsHTML = '';
+                    
+                    filteredData.forEach(item => {
+                        resultsHTML += `
+                            <div class="result-item">
+                                <div class="code">${searchType.toUpperCase()} Code: ${item.code}</div>
+                                <div class="description">${item.description}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    searchResults.innerHTML = resultsHTML;
+                } else {
+                    searchResults.innerHTML = `
+                        <div class="no-results">
+                            <p>No ${searchType.toUpperCase()} codes found for "${searchTerm}"</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Event listeners
+            searchBtn.addEventListener('click', performSearch);
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Change search type
+            hsnOption.addEventListener('change', function() {
+                if (searchInput.value.trim() !== '') {
+                    performSearch();
+                }
+            });
+            
+            sacOption.addEventListener('change', function() {
+                if (searchInput.value.trim() !== '') {
+                    performSearch();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
